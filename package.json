@@ -1,0 +1,29 @@
+{
+  "name": "ls",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JavCan/Evidencia_Semana_Tec.git"
+  },
+  "keywords": [
+    "chat",
+    "Evidencia",
+    "AWS",
+    "Tec"
+  ],
+  "author": "Elizabeth Orduña, Javier Canella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JavCan/Evidencia_Semana_Tec/issues"
+  },
+  "homepage": "https://github.com/JavCan/Evidencia_Semana_Tec#readme",
+  "dependencies": {
+    "mqtt": "^5.10.1"
+  }
+}
