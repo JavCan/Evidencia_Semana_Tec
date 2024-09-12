@@ -2,7 +2,7 @@ const mqtt = require('mqtt')
 const readline = require('readline')
 
 const protocol = 'mqtt'
-const host = '54.167.50.242'
+const host = '184.72.206.210'
 const port = '1883'
 const clientId = `mqtt_publisher_${Math.random().toString(16).slice(3)}`
 
@@ -17,12 +17,13 @@ const client = mqtt.connect(connectUrl, {
   reconnectPeriod: 1000,
 })
 
-const topic = 'test'
+const publishTopic = 'publicador'
+const subscribeTopic = 'suscriptor'
 
 client.on('connect', () => {
   console.log('Connected to MQTT broker')
-  client.subscribe([topic], () => {
-    console.log(`Subscribed to topic '${topic}'`)
+  client.subscribe(publishTopic, () => {
+    console.log(`Subscribed to topic '${publishTopic}'`)
     console.log('Type your message and press Enter to send. Type "exit" to quit.')
     askForInput()
   })
@@ -45,9 +46,11 @@ function askForInput() {
       console.log('Disconnected from MQTT broker')
       process.exit(0)
     } else {
-      client.publish(topic, message, (error) => {
+      client.publish(subscribeTopic, message, (error) => {
         if (error) {
           console.error('Error publishing message:', error)
+        } else {
+          console.log(`Message sent to ${subscribeTopic}`)
         }
       })
       askForInput()
