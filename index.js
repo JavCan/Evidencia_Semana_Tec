@@ -30,7 +30,8 @@ client.on('connect', () => {
 })
 
 client.on('message', (topic, payload) => {
-  console.log(`Received message on ${topic}: ${payload.toString()}`)
+  console.log(`\nSuscriptor: ${payload.toString()}`)
+  askForInput()
 })
 
 const rl = readline.createInterface({
@@ -39,7 +40,7 @@ const rl = readline.createInterface({
 })
 
 function askForInput() {
-  rl.question('', (message) => {
+  rl.question('Publicador: ', (message) => {
     if (message.toLowerCase() === 'exit') {
       client.end()
       rl.close()
@@ -49,8 +50,6 @@ function askForInput() {
       client.publish(subscribeTopic, message, (error) => {
         if (error) {
           console.error('Error publishing message:', error)
-        } else {
-          console.log(`Message sent to ${subscribeTopic}`)
         }
       })
       askForInput()
