@@ -20,8 +20,24 @@ const client = mqtt.connect(connectUrl, {
 const subscribeTopic = 'suscriptor'
 const publishTopic = 'publicador'
 
-client.on('connect', () => {
+let username = '';
+
+function getUser() {
+  return new Promise((resolve) => {
+    rl.question('Por favor, ingresa tu nombre de usuario: ', (answer) => {
+      resolve(answer);
+    });
+  });
+}
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+client.on('connect', async () => {
   console.log('Connected to MQTT broker')
+  username = await getUser();
   client.subscribe(subscribeTopic, () => {
     console.log(`Subscribed to topic '${subscribeTopic}'`)
     console.log('Type your message and press Enter to send. Type "exit" to quit.')
@@ -30,24 +46,19 @@ client.on('connect', () => {
 })
 
 client.on('message', (topic, payload) => {
-  console.log(`\nPublicador: ${payload.toString()}`)
+  console.log(`${payload.toString()}`)
   askForInput()
 })
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-
 function askForInput() {
-  rl.question('Suscriptor: ', (message) => {
+  rl.question('', (message) => {
     if (message.toLowerCase() === 'exit') {
       client.end()
       rl.close()
       console.log('Disconnected from MQTT broker')
       process.exit(0)
     } else {
-      client.publish(publishTopic, message, (error) => {
+      client.publish(publishTopic, `${username}: ${message}`, (error) => {
         if (error) {
           console.error('Error publishing message:', error)
         }
